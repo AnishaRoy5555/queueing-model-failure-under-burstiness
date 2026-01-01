@@ -124,4 +124,3 @@ The gap between theory and reality isn't a bug. It's the central finding.
 
 ---
 
-*Built as a quantitative finance portfolio project demonstrating model failure analysis under uncertainty.*
