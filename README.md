@@ -1,6 +1,6 @@
 # When Queueing Models Break
 
-**Why classical queueing theory underestimates congestion, and how bursty arrivals break it.**
+**Why mean-based queueing predictions are operationally misleading near saturation.**
 
 Standard M/M/1 and M/M/k formulas assume Poisson arrivals. Real systems have bursty arrivals: restaurant rushes, trading order flow, network packet storms. This project quantifies how large the resulting errors are when assumptions fail. In high-utilization systems, this leads to order-of-magnitude errors in wait-time estimates.
 
@@ -113,6 +113,7 @@ This runs:
 ## Core Insight
 
 > Models fail not because they're wrong, but because variance dominates near saturation, and real arrivals are never Poisson.
+> At high utilization, variance dominates estimation error; long busy periods skew finite samples, so real systems experience the tail, not the mean.
 
 The gap between theory and reality isn't a bug. It's the central finding.
 
