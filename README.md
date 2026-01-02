@@ -1,8 +1,8 @@
-# When Queueing Models Break
+# Queueing Model Errors Under Bursty and Self-Exciting Traffic
 
 **Why mean-based queueing predictions are operationally misleading near saturation.**
 
-Standard M/M/1 and M/M/k formulas assume Poisson arrivals. Real systems have bursty arrivals: restaurant rushes, trading order flow, network packet storms. This project quantifies how large the resulting errors are when assumptions fail. In high-utilization systems, this leads to order-of-magnitude errors in wait-time estimates.
+Classical M/M/1 and M/M/k queueing models significantly underestimate waiting times when arrival processes are bursty, even when mean arrival rates are matched. Using discrete-event simulation, I show that batch and Hawkes arrivals increase mean wait times by 44–92% at ρ = 0.8, and that multi-server systems reduce but do not eliminate this bias. The dominant failure mechanism is variance explosion near saturation, not modeling error.
 
 ## Key Finding
 
@@ -13,7 +13,7 @@ Standard M/M/1 and M/M/k formulas assume Poisson arrivals. Real systems have bur
 | Hawkes process (self-exciting) | **+79%** |
 
 *Same mean arrival rate. Radically different delays.*
-
+All arrival processes are matched on mean arrival rate; only higher-order statistics differ.
 **M/M/1 formulas underestimate wait times by up to 2× under realistic conditions.**
 
 Multiple servers help but don't eliminate the problem:
@@ -36,7 +36,7 @@ Multiple servers help but don't eliminate the problem:
 ## The Variance Insight
 
 At high utilization, simulation "errors" aren't bugs. They're finite-sample effects.
-
+For M/M/1,
 At ρ = 0.95:
 ```
 Var[L] = ρ / (1 - ρ)² = 380
@@ -80,6 +80,7 @@ Baseline models are validated first to isolate the effect of burstiness.
 | M/M/5 (ρ=0.8) | P(wait) | 0.56 | 0.55 | 1.8% |
 
 High-ρ cases (ρ = 0.95) show larger deviations. This is expected due to variance explosion, not simulation error.
+All arrival processes are matched on mean rate but not higher moments; the resulting variance inflation is the mechanism driving the observed delays
 
 ## Project Structure
 
@@ -112,8 +113,7 @@ This runs:
 
 ## Core Insight
 
-> Models fail not because they're wrong, but because variance dominates near saturation, and real arrivals are never Poisson.
-> At high utilization, variance dominates estimation error; long busy periods skew finite samples, so real systems experience the tail, not the mean.
+>Models tend to fail near saturation not because the assumptions are wrong, but because variance overwhelms everything else. At high utilization, long busy periods dominate finite samples, so real systems experience tail behavior rather than average behavior. Real arrivals are almost never Poisson
 
 The gap between theory and reality isn't a bug. It's the central finding.
 
